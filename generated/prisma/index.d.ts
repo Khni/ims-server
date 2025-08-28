@@ -36,7 +36,7 @@ export namespace $Enums {
   export const OtpType: {
   VERIFY_EMAIL: 'VERIFY_EMAIL',
   LOGIN: 'LOGIN',
-  FORGOT_PASSWORD: 'FORGOT_PASSWORD'
+  FORGET_PASSWORD: 'FORGET_PASSWORD'
 };
 
 export type OtpType = (typeof OtpType)[keyof typeof OtpType]

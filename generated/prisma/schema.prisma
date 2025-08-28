@@ -6,7 +6,7 @@
 
 generator client {
   provider = "prisma-client-js"
-  output   = "../generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -23,7 +23,7 @@ generator zod {
 enum OtpType {
   VERIFY_EMAIL
   LOGIN
-  FORGOT_PASSWORD
+  FORGET_PASSWORD
 }
 
 enum OauthProvider {

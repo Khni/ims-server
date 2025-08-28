@@ -174,7 +174,7 @@ exports.Prisma.NullsOrder = {
 exports.OtpType = exports.$Enums.OtpType = {
   VERIFY_EMAIL: 'VERIFY_EMAIL',
   LOGIN: 'LOGIN',
-  FORGOT_PASSWORD: 'FORGOT_PASSWORD'
+  FORGET_PASSWORD: 'FORGET_PASSWORD'
 };
 
 exports.OauthProvider = exports.$Enums.OauthProvider = {

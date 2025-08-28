@@ -5,7 +5,8 @@ import { z } from "zod";
 const envSchema = z.object({
   NODE_ENV: z.enum(["development", "test", "production"]),
   PORT: z.string().regex(/^\d+$/).transform(Number),
-
+  JWT_SECRET: z.string().min(20, "JWT_SECRET must be at least 20 chars"),
+  ACCSESS_TOKEN_EXPIRES_IN_MINUTES: z.string().regex(/^\d+$/).transform(Number),
   // Database
   DATABASE_URL: z.url(),
 });

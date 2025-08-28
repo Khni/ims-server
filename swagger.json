@@ -6,7 +6,46 @@
 		"parameters": {},
 		"requestBodies": {},
 		"responses": {},
-		"schemas": {},
+		"schemas": {
+			"LocalRegisterInput": {
+				"properties": {
+					"lastName": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"lastName",
+					"firstName",
+					"password",
+					"email"
+				],
+				"type": "object"
+			},
+			"LocalLoginInput": {
+				"properties": {
+					"password": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"password",
+					"email"
+				],
+				"type": "object"
+			}
+		},
 		"securitySchemes": {}
 	},
 	"info": {
@@ -36,6 +75,134 @@
 				],
 				"security": [],
 				"parameters": []
+			}
+		},
+		"/auth/register": {
+			"post": {
+				"operationId": "Register",
+				"responses": {
+					"201": {
+						"description": "Created",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"user": {
+											"properties": {
+												"lastName": {
+													"type": "string"
+												},
+												"firstName": {
+													"type": "string"
+												},
+												"email": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"lastName",
+												"firstName",
+												"email",
+												"id"
+											],
+											"type": "object"
+										},
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"user",
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LocalRegisterInput"
+							}
+						}
+					}
+				}
+			}
+		},
+		"/auth/login": {
+			"post": {
+				"operationId": "Login",
+				"responses": {
+					"200": {
+						"description": "Ok",
+						"content": {
+							"application/json": {
+								"schema": {
+									"properties": {
+										"user": {
+											"properties": {
+												"lastName": {
+													"type": "string"
+												},
+												"firstName": {
+													"type": "string"
+												},
+												"email": {
+													"type": "string"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"lastName",
+												"firstName",
+												"email",
+												"id"
+											],
+											"type": "object"
+										},
+										"accessToken": {
+											"type": "string"
+										}
+									},
+									"required": [
+										"user",
+										"accessToken"
+									],
+									"type": "object"
+								}
+							}
+						}
+					}
+				},
+				"tags": [
+					"Authentication"
+				],
+				"security": [],
+				"parameters": [],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/LocalLoginInput"
+							}
+						}
+					}
+				}
 			}
 		}
 	},

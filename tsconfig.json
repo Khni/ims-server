@@ -18,6 +18,7 @@
     "target": "ES2022",
 
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "noFallthroughCasesInSwitch": true
   }
 }
