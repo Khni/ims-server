@@ -1,0 +1,88 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator zod {
+  provider = "zod-prisma-types"
+}
+
+// ========= ENUMS =========
+
+enum OtpType {
+  VERIFY_EMAIL
+  LOGIN
+  FORGOT_PASSWORD
+}
+
+enum OauthProvider {
+  NONE
+  FACEBOOK
+  GOOGLE
+}
+
+enum PolicyName {
+  CREATE_USER_ROLE
+  REVOKE_USER_ROLE
+  UPDATE_BUSINESS_INFORMATIONS
+}
+
+enum RoleUserStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}
+
+// ========= MODELS =========
+
+model Otp {
+  id        String   @id @default(uuid())
+  type      OtpType
+  otp       String
+  email     String
+  expiredIn DateTime
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+}
+
+model User {
+  id        String   @id @default(uuid())
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt()
+  email     String   @unique
+  firstName String
+  lastName  String
+  password  String?
+
+  picture       String?
+  oauthProvider OauthProvider @default(NONE)
+  oauthId       String?
+
+  refreshTokens RefreshToken[]
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid())
+  token     String    @unique
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userAgent String?
+  ipAddress String?
+  expiresAt DateTime
+  revokedAt DateTime?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt()
+}
