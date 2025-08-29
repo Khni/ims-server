@@ -1,5 +1,5 @@
 import prisma from "../../database/prisma.js";
-import { AuthError } from "./AuthError.js";
+import { AuthError } from "../errors/AuthError.js";
 import bcrypt from "bcrypt";
 import { createRefreshToken } from "./refreshToken.service.js";
 import jwt from "jsonwebtoken";

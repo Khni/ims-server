@@ -1,20 +1,16 @@
 import prisma from "../../database/prisma.js";
 import bcrypt from "bcrypt";
-import { AuthError } from "./AuthError.js";
+
 import { createRefreshToken } from "./refreshToken.service.js";
 import { createAccessToken } from "./accessToken.service.js";
+import { loginBodySchema } from "../../shared/auth/schemas/index.js";
+import { ZodError } from "zod";
+import { AuthError } from "../errors/AuthError.js";
 
-export const login = async ({
-  email,
-  password,
-}: {
-  email: string;
-  password: string;
-}) => {
+export const login = async (data: { email: string; password: string }) => {
   try {
-    if (!email || !password) {
-      throw new Error("Missing email,password in login");
-    }
+    //parse email and password is critical error because it means it passed the frontend and controller validation!
+    const { email, password } = loginBodySchema.parse(data);
 
     const user = await prisma.user.findUnique({
       where: {
@@ -37,7 +33,7 @@ export const login = async ({
       });
     }
 
-    const isValidPassword = bcrypt.compare(password, user.password);
+    const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
       throw new AuthError({
         code: "INCORRECT_CREDENTIALS",
@@ -61,6 +57,7 @@ export const login = async ({
     if (error instanceof AuthError) {
       throw error;
     }
+
     throw new AuthError({
       code: "LOGIN_FAILED",
       cause: error,

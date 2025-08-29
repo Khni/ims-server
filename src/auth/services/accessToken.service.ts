@@ -8,7 +8,8 @@ export const createAccessToken = ({
   email: string;
   id: string;
 }) => {
-  return jwt.sign({ email, id }, config.JWT_SECRET, {
-    expiresIn: `${config.ACCSESS_TOKEN_EXPIRES_IN_MINUTES}m`,
+  const env = config();
+  return jwt.sign({ email, id }, env.JWT_SECRET, {
+    expiresIn: `${env.ACCSESS_TOKEN_EXPIRES_IN_MINUTES}m`,
   });
 };

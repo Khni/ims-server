@@ -11,7 +11,7 @@ import {
 import type { Request as ExpressRequestType } from "express";
 import { errorMapper } from "../../core/error-handler/index.js";
 import { authErrorMapping } from "../../shared/auth/errors/auth.errors.js";
-import { AuthError } from "../services/AuthError.js";
+import { AuthError } from "../errors/AuthError.js";
 import { register } from "../services/register.service.js";
 import { RefreshTokenCookie } from "../helpers/refreshToken.cookie.js";
 import { config } from "../../config/envSchema.js";
@@ -32,8 +32,9 @@ export class AuthController extends Controller {
   private refreshTokenCookie: RefreshTokenCookie;
   constructor() {
     super();
+    const env = config();
     this.refreshTokenCookie = new RefreshTokenCookie(
-      config.NODE_ENV === "production"
+      env.NODE_ENV === "production"
     );
   }
   @Middlewares([validateBodySchema(registerBodySchema)])
