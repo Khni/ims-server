@@ -9,7 +9,7 @@
     "test:ui": "vitest --ui",
     "test:coverage": "vitest run --coverage",
     "lint": "eslint .",
-    "build": "pnpm tsoa:generate && orval && npx prisma generate &&  tsc -p tsconfig.build.json",
+    "build": "pnpm tsoa:generate  && npx prisma generate &&  tsc -p tsconfig.build.json",
     "dev": "tsx --watch --watch-preserve-output src/index.ts",
     "tsoa:generate": "tsoa spec-and-routes",
     "clean": "rm -rf dist",

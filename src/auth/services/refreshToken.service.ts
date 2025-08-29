@@ -1,6 +1,6 @@
 import prisma from "../../database/prisma.js";
 import crypto from "crypto";
-import { Prisma } from "../../../generated/prisma/index.js";
+import { Prisma } from "../../../prisma/generated/prisma/index.js";
 export const createRefreshToken = async (
   userId: string,
   tx?: Prisma.TransactionClient

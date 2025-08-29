@@ -149,4 +149,5 @@ vite.config.ts.timestamp-*
 
 
 .DS_Store
-./src/generated
+/generated/
+prisma/generated

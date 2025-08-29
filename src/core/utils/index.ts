@@ -6,4 +6,3 @@ export * from "./schema/validateSchemaMiddleware.js";
 export * from "./generate-random-integer.js";
 export * from "./parse-safe-env-number.js";
 export * from "./generate-expired-date.js";
-export * from "./create-config.js";
