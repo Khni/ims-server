@@ -4,8 +4,10 @@ import bcrypt from "bcrypt";
 import { createRefreshToken } from "./refreshToken.service.js";
 import { createAccessToken } from "./accessToken.service.js";
 import { loginBodySchema } from "../../shared/auth/schemas/index.js";
-import { ZodError } from "zod";
+
 import { AuthError } from "../errors/AuthError.js";
+import { AuthDomainError } from "../errors/AuthDomainError.js";
+import { AuthUnexpectedError } from "../errors/AuthUnexpectedError.js";
 
 export const login = async (data: { email: string; password: string }) => {
   try {
@@ -18,28 +20,25 @@ export const login = async (data: { email: string; password: string }) => {
       },
     });
     if (!user) {
-      throw new AuthError({
-        code: "INCORRECT_CREDENTIALS",
-        message: `Email ${email} is not exist`,
-        logLevel: "warn",
-      });
+      throw new AuthDomainError(
+        "INCORRECT_CREDENTIALS",
+        `Email ${email} is not exist`
+      );
     }
 
     if (!user.password) {
-      throw new AuthError({
-        code: "USER_NOT_LOCAL",
-        message: `Email ${email} is not local registered`,
-        logLevel: "warn",
-      });
+      throw new AuthDomainError(
+        "USER_NOT_LOCAL",
+        `Email ${email} is not local registered`
+      );
     }
 
     const isValidPassword = await bcrypt.compare(password, user.password);
     if (!isValidPassword) {
-      throw new AuthError({
-        code: "INCORRECT_CREDENTIALS",
-        message: `password for Email ${email} is not Match`,
-        logLevel: "warn",
-      });
+      throw new AuthDomainError(
+        "INCORRECT_CREDENTIALS",
+        `password for Email ${email} is not Match`
+      );
     }
     const refreshToken = await createRefreshToken(user.id);
     const accessToken = createAccessToken({ email: user.email, id: user.id });
@@ -58,11 +57,6 @@ export const login = async (data: { email: string; password: string }) => {
       throw error;
     }
 
-    throw new AuthError({
-      code: "LOGIN_FAILED",
-      cause: error,
-      message: "something went wrong while Login",
-      logLevel: "error",
-    });
+    throw new AuthUnexpectedError("LOGIN_FAILED", error);
   }
 };

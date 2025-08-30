@@ -1,13 +1,15 @@
-//-WIP-
-import {
-  CustomError,
-  CustomErrorType,
-} from "../../core/error-handler/index.js";
-import { AuthErrorCodesType } from "../../shared/auth/errors/auth.errors.js";
+import { AuthDomainErrorCodesType } from "../../shared/auth/errors/auth.errors.js";
+import { AuthError } from "./AuthError.js";
 
-export class AuthDomainError extends CustomError<AuthErrorCodesType> {
-  constructor(error: CustomErrorType<AuthErrorCodesType>) {
-    super({ ...error, name: "AuthDomainError", logLevel: "warn" });
+export class AuthDomainError extends AuthError {
+  constructor(code: AuthDomainErrorCodesType, msg?: string, meta?: {}) {
+    super({
+      code,
+      name: "AuthDomainError",
+      logLevel: "warn",
+      message: msg || code,
+      meta,
+    });
 
     Object.setPrototypeOf(this, AuthDomainError.prototype);
   }

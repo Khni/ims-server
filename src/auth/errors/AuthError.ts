@@ -6,7 +6,7 @@ import { AuthErrorCodesType } from "../../shared/auth/errors/auth.errors.js";
 
 export class AuthError extends CustomError<AuthErrorCodesType> {
   constructor(error: CustomErrorType<AuthErrorCodesType>) {
-    super({ ...error, name: "AuthError" });
+    super(error);
 
     Object.setPrototypeOf(this, AuthError.prototype);
   }

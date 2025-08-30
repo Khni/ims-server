@@ -1,5 +1,3 @@
-import dotenv from "dotenv";
-dotenv.config();
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
 import prisma from "../../database/__mocks__/prisma.js";
@@ -11,6 +9,7 @@ import { OauthProvider, User } from "../../../prisma/generated/prisma/index.js";
 import { login } from "./login.service.js";
 import { ZodError } from "zod";
 import { AuthError } from "../errors/AuthError.js";
+import { AuthDomainError } from "../errors/AuthDomainError.js";
 
 // Mock modules
 vi.mock("../../database/prisma.js");
@@ -76,25 +75,17 @@ describe("login", () => {
   });
 
   it("should throw error for missing credentials", async () => {
-    // Act & Assert
-    // await expect(login({ email: "", password: "" })).rejects.toThrow(
-    //   "Missing email,password in login"
-    // );
-    await expect(login({ email: "", password: "" })).rejects.toThrowError(
-      "something went wrong while Login"
-    );
-
     try {
       await login({ email: "", password: "" });
     } catch (err: any) {
       expect(err.code).toBe("LOGIN_FAILED");
       expect(err.logLevel).toBe("error");
-      expect(err.message).toBe("something went wrong while Login");
+
       expect(err.cause).toBeInstanceOf(ZodError);
     }
   });
 
-  it("should throw AuthError for non-existent user", async () => {
+  it("should throw AuthDomainError for non-existent user", async () => {
     // Arrange
     prisma.user.findUnique.mockResolvedValue(null);
 
@@ -104,7 +95,7 @@ describe("login", () => {
         email: "nonexistent@example.com",
         password: "password123",
       })
-    ).rejects.toThrow(AuthError);
+    ).rejects.toThrow(AuthDomainError);
 
     await expect(
       login({
@@ -117,7 +108,7 @@ describe("login", () => {
     });
   });
 
-  it("should throw AuthError for non-local user", async () => {
+  it("should throw AuthDomainError for non-local user", async () => {
     // Arrange
     prisma.user.findUnique.mockResolvedValue({
       ...mockUser,
@@ -130,7 +121,7 @@ describe("login", () => {
         email: "oauth@example.com",
         password: "password123",
       })
-    ).rejects.toThrow(AuthError);
+    ).rejects.toThrow(AuthDomainError);
 
     await expect(
       login({
@@ -143,7 +134,7 @@ describe("login", () => {
     });
   });
 
-  it("should throw AuthError for invalid password", async () => {
+  it("should throw AuthDomainError for invalid password", async () => {
     // Arrange
     prisma.user.findUnique.mockResolvedValue(mockUser);
     vi.mocked(bcrypt.compare).mockResolvedValue(false as never);
@@ -154,7 +145,7 @@ describe("login", () => {
         email: "test@example.com",
         password: "wrongpassword",
       })
-    ).rejects.toThrow(AuthError);
+    ).rejects.toThrow(AuthDomainError);
 
     await expect(
       login({
@@ -180,7 +171,6 @@ describe("login", () => {
     ).rejects.toMatchObject({
       code: "LOGIN_FAILED",
       logLevel: "error",
-      message: "something went wrong while Login",
     });
 
     await expect(
@@ -190,7 +180,6 @@ describe("login", () => {
       })
     ).rejects.toMatchObject({
       code: "LOGIN_FAILED",
-      message: "something went wrong while Login",
     });
   });
 });

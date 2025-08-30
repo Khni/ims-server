@@ -6,4 +6,5 @@ export type CustomErrorType<CodeType> = {
   code: CodeType;
   logLevel: LogLevel;
   cause?: unknown;
+  name: string;
 };

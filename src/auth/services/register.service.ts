@@ -6,27 +6,22 @@ import jwt from "jsonwebtoken";
 import { config } from "../../config/envSchema.js";
 import { createAccessToken } from "./accessToken.service.js";
 import { Prisma } from "../../../prisma/generated/prisma/index.js";
-export const register = async ({
-  email,
-  password,
-  firstName,
-  lastName,
-}: Prisma.UserCreateInput) => {
+import { AuthDomainError } from "../errors/AuthDomainError.js";
+import { AuthUnexpectedError } from "../errors/AuthUnexpectedError.js";
+import { registerBodySchema } from "../../shared/auth/schemas/index.js";
+export const register = async (data: Prisma.UserCreateInput) => {
   try {
-    if (!email || !password || !firstName || !lastName) {
-      throw new Error("Missing email,password,firstname,lastname in register");
-    }
+    //parse data is critical/unexpected error because it means it passed the frontend and controller validation!
+    const { email, password, firstName, lastName } =
+      registerBodySchema.parse(data);
+
     const isUsedIdentifier = await prisma.user.findUnique({
       where: {
         email,
       },
     });
     if (isUsedIdentifier) {
-      throw new AuthError({
-        code: "AUTH_USED_EMAIL",
-        logLevel: "warn",
-        message: `Email is used ${email}`,
-      });
+      throw new AuthDomainError("AUTH_USED_EMAIL");
     }
     const hashedPassword = await bcrypt.hash(password, 10);
     const { refreshToken, user } = await prisma.$transaction(async (tx) => {
@@ -48,11 +43,6 @@ export const register = async ({
     if (error instanceof AuthError) {
       throw error;
     }
-    throw new AuthError({
-      code: "AUTH_USER_CREATION_FAILED",
-      logLevel: "error",
-      cause: error,
-      message: "Error register user",
-    });
+    throw new AuthUnexpectedError("AUTH_USER_CREATION_FAILED", error);
   }
 };
