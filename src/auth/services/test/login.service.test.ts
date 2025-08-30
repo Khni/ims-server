@@ -1,35 +1,21 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-import prisma from "../../database/__mocks__/prisma.js";
+import prisma from "../../../database/__mocks__/prisma.js";
 import bcrypt from "bcrypt";
 
-import { createRefreshToken } from "./refreshToken.service.js";
-import { createAccessToken } from "./accessToken.service.js";
-import { OauthProvider, User } from "../../../prisma/generated/prisma/index.js";
-import { login } from "./login.service.js";
+import { createRefreshToken } from "../refreshToken.service.js";
+import { createAccessToken } from "../accessToken.service.js";
+
+import { login } from "../login.service.js";
 import { ZodError } from "zod";
-import { AuthError } from "../errors/AuthError.js";
-import { AuthDomainError } from "../errors/AuthDomainError.js";
+import { AuthDomainError } from "../../errors/AuthDomainError.js";
+import { mockUser } from "./test.data.js";
 
 // Mock modules
-vi.mock("../../database/prisma.js");
+vi.mock("../../../database/prisma.js");
 vi.mock("bcrypt");
-vi.mock("./refreshToken.service.js");
-vi.mock("./accessToken.service.js");
-
-const mockUser: User = {
-  id: "1",
-  isActive: true,
-  createdAt: new Date("2024-01-01T12:00:00.000Z"),
-  updatedAt: new Date("2024-06-01T12:00:00.000Z"),
-  email: "test@example.com",
-  firstName: "John",
-  lastName: "Doe",
-  password: "hashed_password", // hashed password stub
-  picture: "https://example.com/avatar.png",
-  oauthProvider: OauthProvider.NONE,
-  oauthId: null,
-};
+vi.mock("../refreshToken.service.js");
+vi.mock("../accessToken.service.js");
 
 describe("login", () => {
   beforeEach(() => {
