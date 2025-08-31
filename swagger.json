@@ -7,6 +7,67 @@
 		"requestBodies": {},
 		"responses": {},
 		"schemas": {
+			"UserModel": {
+				"properties": {
+					"oauthId": {
+						"type": "string",
+						"nullable": true
+					},
+					"oauthProvider": {
+						"type": "string",
+						"enum": [
+							"NONE",
+							"FACEBOOK",
+							"GOOGLE"
+						]
+					},
+					"picture": {
+						"type": "string",
+						"nullable": true
+					},
+					"password": {
+						"type": "string",
+						"nullable": true
+					},
+					"lastName": {
+						"type": "string"
+					},
+					"firstName": {
+						"type": "string"
+					},
+					"email": {
+						"type": "string"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time"
+					},
+					"isActive": {
+						"type": "boolean"
+					},
+					"id": {
+						"type": "string"
+					}
+				},
+				"required": [
+					"oauthId",
+					"oauthProvider",
+					"picture",
+					"password",
+					"lastName",
+					"firstName",
+					"email",
+					"updatedAt",
+					"createdAt",
+					"isActive",
+					"id"
+				],
+				"type": "object"
+			},
 			"LocalRegisterInput": {
 				"properties": {
 					"lastName": {
@@ -63,7 +124,63 @@
 						"content": {
 							"application/json": {
 								"schema": {
-									"type": "string"
+									"properties": {
+										"refreshToken": {
+											"properties": {
+												"revokedAt": {
+													"type": "string",
+													"format": "date-time"
+												},
+												"expiresAt": {
+													"type": "string",
+													"format": "date-time"
+												},
+												"ipAddress": {
+													"type": "string"
+												},
+												"userAgent": {
+													"type": "string"
+												},
+												"userId": {
+													"type": "string"
+												},
+												"token": {
+													"type": "string"
+												},
+												"updatedAt": {
+													"type": "string",
+													"format": "date-time"
+												},
+												"createdAt": {
+													"type": "string",
+													"format": "date-time"
+												},
+												"id": {
+													"type": "string"
+												}
+											},
+											"required": [
+												"revokedAt",
+												"expiresAt",
+												"ipAddress",
+												"userAgent",
+												"userId",
+												"token",
+												"updatedAt",
+												"createdAt",
+												"id"
+											],
+											"type": "object"
+										},
+										"user": {
+											"$ref": "#/components/schemas/UserModel"
+										}
+									},
+									"required": [
+										"refreshToken",
+										"user"
+									],
+									"type": "object"
 								}
 							}
 						}
