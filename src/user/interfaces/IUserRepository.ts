@@ -1,5 +1,3 @@
-import { ITransactionRepository } from "../../core/database/interfaces/ITransaction.js";
-
 import {
   UserCreateInput,
   UserModel,

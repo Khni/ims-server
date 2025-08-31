@@ -29,7 +29,7 @@ export type RefreshTokenResponse = {
 export const OtpEnum = {
   VERIFY_EMAIL: "VERIFY_EMAIL",
   LOGIN: "LOGIN",
-  FORGOT_PASSWORD: "FORGOT_PASSWORD",
+  FORGOT_PASSWORD: "FORGET_PASSWORD",
 };
 export type OtpType = "VERIFY_EMAIL" | "LOGIN" | "FORGOT_PASSWORD";
 export type CreateOtpBodyType = {

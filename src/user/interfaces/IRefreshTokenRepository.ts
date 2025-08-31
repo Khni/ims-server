@@ -1,4 +1,3 @@
-import { ITransactionRepository } from "../../core/database/interfaces/ITransaction.js";
 import { PrismaTransactionManager } from "../../core/database/PrismaTransactionManager.js";
 import {
   RefreshTokenCreateInput,

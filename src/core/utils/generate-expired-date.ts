@@ -1,5 +1,4 @@
-type TimeUnit = "ms" | "s" | "m" | "h" | "d";
-type ValidTimeString = `${number}${TimeUnit}`;
+import { ValidTimeString } from "./types.js";
 
 /**
  * Generates an expired date based on the given time string.

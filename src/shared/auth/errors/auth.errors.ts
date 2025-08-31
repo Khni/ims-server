@@ -10,6 +10,8 @@ export const AuthDomainErrorCodes = {
   INVALID_ACCESS_TOKEN: "INVALID_ACCESS_TOKEN",
   MISSING_REFRESH_TOKEN: "MISSING_REFRESH_TOKEN",
   EMAIL_IS_NOT_EXIST: "EMAIL_IS_NOT_EXIST",
+  OTP_INVALID: "OTP_INVALID",
+  OTP_EXPIRED: "OTP_EXPIRED",
 } as const;
 
 // Unexpected/Internal Errors
@@ -20,6 +22,7 @@ export const AuthUnexpectedErrorCodes = {
   REFRESHTOKEN_REVOKE_FAILED: "REFRESHTOKEN_REVOKE_FAILED",
   LOGIN_FAILED: "LOGIN_FAILED",
   OTP_CREATION_FAILED: "OTP_CREATION_FAILED",
+  OTP_VERIFICATION_FAILED: "OTP_VERIFICATION_FAILED",
 } as const;
 export type AuthDomainErrorCodesType =
   (typeof AuthDomainErrorCodes)[keyof typeof AuthDomainErrorCodes];
@@ -76,6 +79,15 @@ export const authDomainErrorMapping = {
     statusCode: 400,
     responseMessage: "Email is not Exist in the Database",
   },
+  [AuthDomainErrorCodes.OTP_INVALID]: {
+    statusCode: 401,
+    responseMessage: "The OTP you entered is incorrect. Please try again.",
+  },
+
+  [AuthDomainErrorCodes.OTP_EXPIRED]: {
+    statusCode: 401,
+    responseMessage: "The OTP has expired. Please request a new one.",
+  },
 } as const;
 
 // --- Unexpected Mapping ---
@@ -101,6 +113,10 @@ export const authUnexpectedErrorMapping = {
     responseMessage: "something went wrong while login",
   },
   [AuthUnexpectedErrorCodes.OTP_CREATION_FAILED]: {
+    statusCode: 500,
+    responseMessage: "something went wrong while creating OTP",
+  },
+  [AuthUnexpectedErrorCodes.OTP_VERIFICATION_FAILED]: {
     statusCode: 500,
     responseMessage: "something went wrong while creating OTP",
   },

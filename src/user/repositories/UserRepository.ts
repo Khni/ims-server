@@ -1,6 +1,5 @@
 import { Prisma } from "../../../prisma/generated/prisma/index.js";
 import { PrismaTransactionManager } from "../../core/database/PrismaTransactionManager.js";
-import { Transaction } from "../../core/database/repositories/Transaction.js";
 import prisma from "../../database/prisma.js";
 import { IUserRepository } from "../interfaces/IUserRepository.js";
 import {
