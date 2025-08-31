@@ -1,8 +1,11 @@
+import dotenv from "dotenv";
+dotenv.config();
 import { config } from "../config/envSchema.js";
 import { BcryptHasher } from "../core/hasher/BcryptHasher.js";
 import { CryptoTokenGenerator } from "../core/random-token/CryptoTokenGenerator.js";
 import { JwtTokenService } from "../core/token/JwtToken.js";
 import { RefreshTokenRepository } from "./repositories/RefreshTokenRepository.js";
+
 import { UserRepository } from "./repositories/UserRepository.js";
 import { AuthService } from "./services/AuthService.js";
 import { RefreshTokenService } from "./services/RefreshTokenService.js";

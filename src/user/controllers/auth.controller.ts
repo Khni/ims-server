@@ -12,10 +12,10 @@ import type { Request as ExpressRequestType } from "express";
 import { errorMapper } from "../../core/error-handler/index.js";
 import { authErrorMapping } from "../../shared/auth/errors/auth.errors.js";
 import { AuthError } from "../errors/AuthError.js";
-import { register } from "../services/register.service.js";
+
 import { RefreshTokenCookie } from "../helpers/refreshToken.cookie.js";
 import { config } from "../../config/envSchema.js";
-import { login } from "../services/login.service.js";
+
 import type {
   LocalLoginInput,
   LocalRegisterInput,
@@ -25,11 +25,13 @@ import {
   loginBodySchema,
   registerBodySchema,
 } from "../../shared/auth/schemas/index.js";
+import { authService } from "../authFactory.js";
 
 @Tags("Authentication")
 @Route("auth")
 export class AuthController extends Controller {
   private refreshTokenCookie: RefreshTokenCookie;
+
   constructor() {
     super();
     const env = config();
@@ -55,9 +57,11 @@ export class AuthController extends Controller {
     };
   }> {
     try {
-      const { accessToken, refreshToken, user } = await register({ ...body });
+      const { accessToken, refreshToken, user } = await authService.register({
+        ...body,
+      });
 
-      this.refreshTokenCookie.setToken(refreshToken, req.res!);
+      this.refreshTokenCookie.setToken(refreshToken.token, req.res!);
 
       return { accessToken, user };
     } catch (error) {
@@ -86,9 +90,9 @@ export class AuthController extends Controller {
     }>
   > {
     try {
-      const { refreshToken, ...result } = await login(body);
+      const { refreshToken, ...result } = await authService.login(body);
 
-      this.refreshTokenCookie.setToken(refreshToken, req.res!);
+      this.refreshTokenCookie.setToken(refreshToken.token, req.res!);
 
       return result;
     } catch (error) {

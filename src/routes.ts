@@ -4,9 +4,9 @@
 import type { TsoaRoute } from '@tsoa/runtime';
 import {  fetchMiddlewares, ExpressTemplateService } from '@tsoa/runtime';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { HealthController } from './health-check/health.controller.js';
+import { AuthController } from './user/controllers/auth.controller.js';
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-import { AuthController } from './auth/controllers/auth.controller.js';
+import { HealthController } from './health-check/health.controller.js';
 import type { Request as ExRequest, Response as ExResponse, RequestHandler, Router } from 'express';
 
 
@@ -14,11 +14,6 @@ import type { Request as ExRequest, Response as ExResponse, RequestHandler, Rout
 // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
 
 const models: TsoaRoute.Models = {
-    "UserModel": {
-        "dataType": "refAlias",
-        "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"oauthId":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"oauthProvider":{"dataType":"union","subSchemas":[{"dataType":"enum","enums":["NONE"]},{"dataType":"enum","enums":["FACEBOOK"]},{"dataType":"enum","enums":["GOOGLE"]}],"required":true},"picture":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"password":{"dataType":"union","subSchemas":[{"dataType":"string"},{"dataType":"enum","enums":[null]}],"required":true},"lastName":{"dataType":"string","required":true},"firstName":{"dataType":"string","required":true},"email":{"dataType":"string","required":true},"updatedAt":{"dataType":"datetime","required":true},"createdAt":{"dataType":"datetime","required":true},"isActive":{"dataType":"boolean","required":true},"id":{"dataType":"string","required":true}},"validators":{}},
-    },
-    // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
     "LocalRegisterInput": {
         "dataType": "refAlias",
         "type": {"dataType":"nestedObjectLiteral","nestedProperties":{"lastName":{"dataType":"string","required":true},"firstName":{"dataType":"string","required":true},"password":{"dataType":"string","required":true},"email":{"dataType":"string","required":true}},"validators":{}},
@@ -46,35 +41,6 @@ export function RegisterRoutes(app: Router) {
 
 
     
-        const argsHealthController_healthCheck: Record<string, TsoaRoute.ParameterSchema> = {
-        };
-        app.get('/health-check',
-            ...(fetchMiddlewares<RequestHandler>(HealthController)),
-            ...(fetchMiddlewares<RequestHandler>(HealthController.prototype.healthCheck)),
-
-            async function HealthController_healthCheck(request: ExRequest, response: ExResponse, next: any) {
-
-            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
-
-            let validatedArgs: any[] = [];
-            try {
-                validatedArgs = templateService.getValidatedArgs({ args: argsHealthController_healthCheck, request, response });
-
-                const controller = new HealthController();
-
-              await templateService.apiHandler({
-                methodName: 'healthCheck',
-                controller,
-                response,
-                next,
-                validatedArgs,
-                successStatus: 200,
-              });
-            } catch (err) {
-                return next(err);
-            }
-        });
-        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
         const argsAuthController_register: Record<string, TsoaRoute.ParameterSchema> = {
                 body: {"in":"body","name":"body","required":true,"ref":"LocalRegisterInput"},
                 req: {"in":"request","name":"req","required":true,"dataType":"object"},
@@ -131,6 +97,35 @@ export function RegisterRoutes(app: Router) {
                 next,
                 validatedArgs,
                 successStatus: undefined,
+              });
+            } catch (err) {
+                return next(err);
+            }
+        });
+        // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+        const argsHealthController_healthCheck: Record<string, TsoaRoute.ParameterSchema> = {
+        };
+        app.get('/health-check',
+            ...(fetchMiddlewares<RequestHandler>(HealthController)),
+            ...(fetchMiddlewares<RequestHandler>(HealthController.prototype.healthCheck)),
+
+            async function HealthController_healthCheck(request: ExRequest, response: ExResponse, next: any) {
+
+            // WARNING: This file was auto-generated with tsoa. Please do not modify it. Re-run tsoa to re-generate this file: https://github.com/lukeautry/tsoa
+
+            let validatedArgs: any[] = [];
+            try {
+                validatedArgs = templateService.getValidatedArgs({ args: argsHealthController_healthCheck, request, response });
+
+                const controller = new HealthController();
+
+              await templateService.apiHandler({
+                methodName: 'healthCheck',
+                controller,
+                response,
+                next,
+                validatedArgs,
+                successStatus: 200,
               });
             } catch (err) {
                 return next(err);

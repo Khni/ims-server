@@ -1,9 +1,9 @@
 import { describe, it, expect, beforeEach, vi } from "vitest";
 
-import { AuthDomainError } from "../../auth/errors/AuthDomainError.js";
-import { AuthUnexpectedError } from "../../auth/errors/AuthUnexpectedError.js";
 import { AuthService } from "./AuthService.js";
 import { mockUser } from "./test.data.js";
+import { AuthDomainError } from "../errors/AuthDomainError.js";
+import { AuthUnexpectedError } from "../errors/AuthUnexpectedError.js";
 
 // ---- Dependency Mocks ----
 const mockUserRepository = {

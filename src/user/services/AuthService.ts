@@ -1,6 +1,3 @@
-import { AuthDomainError } from "../../auth/errors/AuthDomainError.js";
-import { AuthError } from "../../auth/errors/AuthError.js";
-import { AuthUnexpectedError } from "../../auth/errors/AuthUnexpectedError.js";
 import { IHasher } from "../../core/hasher/IHasher.js";
 import { IToken } from "../../core/token/IToken.js";
 import {
@@ -8,6 +5,9 @@ import {
   registerBodySchema,
 } from "../../shared/auth/schemas/index.js";
 import { LocalRegisterInput } from "../../shared/auth/types/index.js";
+import { AuthDomainError } from "../errors/AuthDomainError.js";
+
+import { AuthUnexpectedError } from "../errors/AuthUnexpectedError.js";
 import { IRefreshTokenService } from "../interfaces/IRefreshTokenService.js";
 import { IUserRepository } from "../interfaces/IUserRepository.js";
 
@@ -62,7 +62,7 @@ export class AuthService {
         accessToken,
       };
     } catch (error) {
-      if (error instanceof AuthError) {
+      if (error instanceof AuthDomainError) {
         throw error;
       }
       throw new AuthUnexpectedError("AUTH_USER_CREATION_FAILED", error);
