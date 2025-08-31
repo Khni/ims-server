@@ -9,6 +9,7 @@ export const AuthDomainErrorCodes = {
     "MISSING_OR_MALFORMED_AUTHORIZATION_HEADER",
   INVALID_ACCESS_TOKEN: "INVALID_ACCESS_TOKEN",
   MISSING_REFRESH_TOKEN: "MISSING_REFRESH_TOKEN",
+  EMAIL_IS_NOT_EXIST: "EMAIL_IS_NOT_EXIST",
 } as const;
 
 // Unexpected/Internal Errors
@@ -18,6 +19,7 @@ export const AuthUnexpectedErrorCodes = {
   PASSWORD_RESET_FAILED: "PASSWORD_RESET_FAILED",
   REFRESHTOKEN_REVOKE_FAILED: "REFRESHTOKEN_REVOKE_FAILED",
   LOGIN_FAILED: "LOGIN_FAILED",
+  OTP_CREATION_FAILED: "OTP_CREATION_FAILED",
 } as const;
 export type AuthDomainErrorCodesType =
   (typeof AuthDomainErrorCodes)[keyof typeof AuthDomainErrorCodes];
@@ -70,6 +72,10 @@ export const authDomainErrorMapping = {
     statusCode: 400,
     responseMessage: "You are already Logged out",
   },
+  [AuthDomainErrorCodes.EMAIL_IS_NOT_EXIST]: {
+    statusCode: 400,
+    responseMessage: "Email is not Exist in the Database",
+  },
 } as const;
 
 // --- Unexpected Mapping ---
@@ -93,6 +99,10 @@ export const authUnexpectedErrorMapping = {
   [AuthUnexpectedErrorCodes.LOGIN_FAILED]: {
     statusCode: 500,
     responseMessage: "something went wrong while login",
+  },
+  [AuthUnexpectedErrorCodes.OTP_CREATION_FAILED]: {
+    statusCode: 500,
+    responseMessage: "something went wrong while creating OTP",
   },
 } as const;
 

@@ -9,6 +9,16 @@ const envSchema = z.object({
   ACCSESS_TOKEN_EXPIRES_IN_MINUTES: z.string().regex(/^\d+$/).transform(Number),
   // Database
   DATABASE_URL: z.string().url(),
+  // Mail settings
+  MAIL_USER: z.email(),
+  MAIL_PASS: z.string().min(1, "MAIL_PASS cannot be empty"),
+  MAIL_SERVICE: z.string().min(1),
+  MAIL_HOST: z.string().min(1),
+  EMAIL_TEMPLATES_PATH: z
+    .string()
+    .regex(/^(\.{1,2}\/)?([a-zA-Z0-9._-]+\/?)*$/, {
+      message: "Invalid relative path format for EMAIL_TEMPLATES_PATH",
+    }),
 });
 
 export function loadConfig() {
