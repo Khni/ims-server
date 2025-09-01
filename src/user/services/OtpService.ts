@@ -31,9 +31,11 @@ export class OtpService {
   createAndSendMail = async (data: { email: string; otpType: OtpType }) => {
     try {
       CreateOtpSchema.parse({ email: data.email, type: data.otpType });
+
       const user = await this.userRepository.findUnique({
         where: { email: data.email },
       });
+
       this.otpHelper.validateOtpType(data.otpType, user, data.email);
 
       const { hashedOtp, otp } = await this.otpHelper.generateOtp();
@@ -52,8 +54,8 @@ export class OtpService {
         generatedOtp: otp,
         otpExpiredInMinutes: this.otpExpiredInMinutes,
       });
+      return "Email has been sent";
     } catch (error) {
-      console.log(error);
       if (error instanceof AuthDomainError) {
         throw error;
       }
@@ -83,7 +85,7 @@ export class OtpService {
         },
         orderBy: { createdAt: "desc" },
       });
-      this.otpHelper.validateOtp(otpRecord, otp);
+      await this.otpHelper.validateOtp(otpRecord, otp);
 
       const token = this.tokenService.sign({ email, OtpType });
 

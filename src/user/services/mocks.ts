@@ -1,6 +1,7 @@
 // __mocks__/repositories.ts
 import { vi } from "vitest";
 import { IOtpHelper } from "../interfaces/IOtpHelper.js";
+import { IUserRepository } from "../interfaces/IUserRepository.js";
 
 export const mockOtpRepository = {
   create: vi.fn(),
@@ -37,12 +38,12 @@ export const mockUserRepository = {
   createTransaction: vi.fn(),
 };
 
-export const mockOtpHelper = (): IOtpHelper => ({
-  validateOtp: vi.fn().mockResolvedValue(undefined),
+export const mockOtpHelper = {
+  validateOtp: vi.fn(),
   generateOtp: vi.fn().mockResolvedValue({
     otp: 123456,
-    hashedOtp: Promise.resolve("hashed-otp"),
+    hashedOtp: "hadhed-otp",
   }),
-  validateOtpType: vi.fn().mockImplementation(() => undefined),
+  validateOtpType: vi.fn(),
   sendOtpMail: vi.fn(),
-});
+};

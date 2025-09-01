@@ -42,31 +42,6 @@ export class OtpHelper implements IOtpHelper {
     return { otp: otp.toString(), hashedOtp };
   };
 
-  validateOtpType = (
-    otpType: OtpType,
-    user: { password?: string | null } | null,
-    email: string
-  ) => {
-    if (otpType === "VERIFY_EMAIL" && user) {
-      throw new AuthDomainError(
-        "AUTH_USED_EMAIL",
-        `Email: ${email} is in used, Verify Email OTP can not be generated`
-      );
-    }
-    if ((otpType === "FORGET_PASSWORD" || otpType === "LOGIN") && !user) {
-      throw new AuthDomainError(
-        "EMAIL_IS_NOT_EXIST",
-        `Email: ${email} is not in Database, ${otpType} OTP can not be generated`
-      );
-    }
-    if (otpType === "FORGET_PASSWORD" && !user?.password) {
-      throw new AuthDomainError(
-        "USER_NOT_LOCAL",
-        `Email: ${email} is missing a local password, FORGET_PASSWORD OTP can not be generated`
-      );
-    }
-  };
-
   sendOtpMail = async ({
     email,
     otpType,
@@ -90,5 +65,30 @@ export class OtpHelper implements IOtpHelper {
         year: new Date().getFullYear(),
       }
     );
+  };
+
+  validateOtpType = (
+    otpType: OtpType,
+    user: { password?: string | null } | null,
+    email: string
+  ) => {
+    if (otpType === "VERIFY_EMAIL" && user) {
+      throw new AuthDomainError(
+        "AUTH_USED_EMAIL",
+        `Email: ${email} is in used, Verify Email OTP can not be generated`
+      );
+    }
+    if ((otpType === "FORGET_PASSWORD" || otpType === "LOGIN") && !user) {
+      throw new AuthDomainError(
+        "EMAIL_IS_NOT_EXIST",
+        `Email: ${email} is not in Database, ${otpType} OTP can not be generated`
+      );
+    }
+    if (otpType === "FORGET_PASSWORD" && !user?.password) {
+      throw new AuthDomainError(
+        "USER_NOT_LOCAL",
+        `Email: ${email} is missing a local password, FORGET_PASSWORD OTP can not be generated`
+      );
+    }
   };
 }
