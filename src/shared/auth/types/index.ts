@@ -31,7 +31,7 @@ export const OtpEnum = {
   LOGIN: "LOGIN",
   FORGOT_PASSWORD: "FORGET_PASSWORD",
 };
-export type OtpType = "VERIFY_EMAIL" | "LOGIN" | "FORGOT_PASSWORD";
+export type OtpType = "VERIFY_EMAIL" | "LOGIN" | "FORGET_PASSWORD";
 export type CreateOtpBodyType = {
   email: string;
   type: OtpType;

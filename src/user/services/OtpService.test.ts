@@ -1,7 +1,11 @@
 import { describe } from "node:test";
 import { OtpService } from "./OtpService.js";
 import { beforeEach, expect, it, vi } from "vitest";
-import { mockOtpRepository, mockUserRepository } from "./mocks.js";
+import {
+  mockOtpHelper,
+  mockOtpRepository,
+  mockUserRepository,
+} from "./mocks.js";
 import { mockHasher } from "../../core/hasher/mocks.js";
 import { mockMailSender } from "../../core/mailer/mocks.js";
 import { generateExpiredDate } from "../../core/utils/generate-expired-date.js";
@@ -17,11 +21,10 @@ describe("OtpService", () => {
     service = new OtpService(
       mockOtpRepository,
       mockUserRepository,
-      mockHasher,
+      mockOtpHelper(),
       mockToken,
-      mockMailSender,
+
       10,
-      vi.fn(),
       vi.fn()
     );
   });
